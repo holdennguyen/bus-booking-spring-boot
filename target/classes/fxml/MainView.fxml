@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.vexe.controller.MainController"
+            stylesheets="@../styles/main.css"
+            styleClass="main-container">
+    
+    <!-- Top Navigation Bar -->
+    <top>
+        <HBox styleClass="nav-bar">
+            <MenuBar styleClass="menu-bar" HBox.hgrow="ALWAYS">
+                <Menu text="File">
+                    <Menu text="Settings">
+                        <MenuItem fx:id="appearanceMenuItem" text="Appearance"/>
+                        <MenuItem fx:id="languageMenuItem" text="Language"/>
+                        <MenuItem fx:id="notificationsMenuItem" text="Notifications"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem fx:id="profileMenuItem" text="Profile"/>
+                    </Menu>
+                    <SeparatorMenuItem/>
+                    <MenuItem fx:id="exitMenuItem" text="Exit"/>
+                </Menu>
+                <Menu text="Help">
+                    <MenuItem fx:id="userGuideMenuItem" text="User Guide"/>
+                    <MenuItem fx:id="supportMenuItem" text="Support"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem fx:id="aboutMenuItem" text="About"/>
+                </Menu>
+            </MenuBar>
+        </HBox>
+    </top>
+    
+    <!-- Left Sidebar -->
+    <left>
+        <VBox styleClass="sidebar">
+            <Button fx:id="dashboardButton" text="Dashboard" styleClass="nav-button" maxWidth="Infinity"/>
+            <Button fx:id="bookTicketButton" text="Book Ticket" styleClass="nav-button" maxWidth="Infinity"/>
+            <Button fx:id="myBookingsButton" text="My Bookings" styleClass="nav-button" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+    
+    <!-- Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <Label text="Welcome to Vexe Bus Booking System" styleClass="welcome-text"/>
+        </StackPane>
+    </center>
+    
+    <!-- Status Bar -->
+    <bottom>
+        <HBox styleClass="status-bar">
+            <Label text="Ready" HBox.hgrow="ALWAYS"/>
+            <Label text="Version 1.0"/>
+        </HBox>
+    </bottom>
+    
+</BorderPane> 

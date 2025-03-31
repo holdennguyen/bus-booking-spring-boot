@@ -1,0 +1,235 @@
+/* Theme - Default Blue */
+
+/* Main Container */
+.main-container {
+    -fx-background-color: #F5F5F5;
+    -fx-padding: 10;
+}
+
+/* Navigation Bar */
+.nav-bar {
+    -fx-background-color: #1976D2;
+    -fx-padding: 0;
+}
+
+.menu-bar {
+    -fx-background-color: transparent;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13;
+}
+
+.menu-bar .menu:hover {
+    -fx-background-color: #1565C0;
+}
+
+.menu-bar .menu-item {
+    -fx-background-color: #1976D2;
+}
+
+.menu-bar .menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-bar .menu-item:hover {
+    -fx-background-color: #1565C0;
+}
+
+.menu-bar .menu-item:focused {
+    -fx-background-color: #1565C0;
+}
+
+.menu-bar .context-menu {
+    -fx-background-color: #1976D2;
+    -fx-background-radius: 0 0 5 5;
+    -fx-border-radius: 0 0 5 5;
+    -fx-padding: 2;
+}
+
+.separator {
+    -fx-background-color: #1565C0;
+}
+
+.sidebar {
+    -fx-background-color: #1565C0;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-pref-width: 200;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 15 20;
+    -fx-font-size: 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.nav-button:hover {
+    -fx-background-color: #1565C0;
+}
+
+/* Content Area */
+.content-area {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.welcome-text {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.status-bar {
+    -fx-padding: 5 10;
+    -fx-background-color: #F5F5F5;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: #E0E0E0;
+}
+
+.status-bar .label {
+    -fx-text-fill: #757575;
+    -fx-padding: 0 10;
+}
+
+/* Booking View Styles */
+.booking-container {
+    -fx-background-color: white;
+}
+
+.page-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976D2;
+}
+
+/* Buttons */
+.primary-button {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-padding: 10 20;
+    -fx-background-radius: 5;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1565C0;
+}
+
+.danger-button {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-padding: 5 10;
+    -fx-background-radius: 5;
+}
+
+.danger-button:hover {
+    -fx-background-color: #D32F2F;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1976D2;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}
+
+.table-view .table-cell {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #E3F2FD;
+}
+
+.combo-box, .date-picker, .spinner {
+    -fx-pref-width: 200;
+}
+
+.combo-box .list-cell:selected,
+.date-picker .text-field {
+    -fx-text-fill: #2C3E50;
+}
+
+.combo-box:focused,
+.date-picker:focused,
+.spinner:focused {
+    -fx-border-color: #1976D2;
+}
+
+.dashboard-container {
+    -fx-background-color: white;
+}
+
+.stat-card {
+    -fx-background-color: #F5F5F5;
+    -fx-padding: 15;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
+    -fx-min-width: 200;
+    -fx-border-color: #E0E0E0;
+}
+
+.stat-label {
+    -fx-font-size: 14;
+    -fx-text-fill: #757575;
+}
+
+/* Bus Type Info Styles */
+.bus-type-info {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+.bus-type-card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
+}
+
+.bus-type-info-header {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976D2;
+}
+
+.bus-type-amenities {
+    -fx-text-fill: #2C3E50;
+    -fx-font-size: 14;
+}
+
+.bus-type-price {
+    -fx-text-fill: #2196F3;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+/* Accent styles */
+.accent-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.accent-button:hover {
+    -fx-background-color: #1E88E5;
+}
+
+.highlight-text {
+    -fx-text-fill: #2196F3;
+}

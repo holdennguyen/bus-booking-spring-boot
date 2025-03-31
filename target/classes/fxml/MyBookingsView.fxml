@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.vexe.controller.MyBookingsController"
+      styleClass="booking-container"
+      spacing="20">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <Label text="My Bookings" styleClass="page-title"/>
+    
+    <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="fromColumn" text="From"/>
+            <TableColumn fx:id="toColumn" text="To"/>
+            <TableColumn fx:id="dateColumn" text="Travel Date"/>
+            <TableColumn fx:id="timeColumn" text="Time"/>
+            <TableColumn fx:id="busTypeColumn" text="Bus Type"/>
+            <TableColumn fx:id="passengersColumn" text="Passengers"/>
+            <TableColumn fx:id="totalPriceColumn" text="Total Price"/>
+            <TableColumn fx:id="bookingDateColumn" text="Booking Date"/>
+            <TableColumn fx:id="actionColumn" text="Action"/>
+        </columns>
+    </TableView>
+</VBox> 

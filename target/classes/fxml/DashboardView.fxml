@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.vexe.controller.DashboardController"
+      styleClass="dashboard-container"
+      spacing="20">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <!-- Dashboard Header -->
+    <Label text="Dashboard" styleClass="page-title"/>
+    
+    <!-- Quick Stats -->
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <VBox styleClass="stat-card">
+            <Label text="Total Bookings" styleClass="stat-label"/>
+            <Label fx:id="totalBookingsLabel" text="0" styleClass="stat-value"/>
+        </VBox>
+        
+        <VBox styleClass="stat-card">
+            <Label text="Today's Bookings" styleClass="stat-label"/>
+            <Label fx:id="todayBookingsLabel" text="0" styleClass="stat-value"/>
+        </VBox>
+        
+        <VBox styleClass="stat-card">
+            <Label text="Popular Route" styleClass="stat-label"/>
+            <Label fx:id="popularRouteLabel" text="N/A" styleClass="stat-value"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Recent Bookings -->
+    <VBox spacing="10">
+        <Label text="Recent Bookings" styleClass="section-title"/>
+        <TableView fx:id="recentBookingsTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="dateColumn" text="Date"/>
+                <TableColumn fx:id="fromColumn" text="From"/>
+                <TableColumn fx:id="toColumn" text="To"/>
+                <TableColumn fx:id="busTypeColumn" text="Bus Type"/>
+                <TableColumn fx:id="priceColumn" text="Price"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+    <!-- Quick Actions -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="New Booking" onAction="#handleNewBooking" styleClass="primary-button"/>
+        <Button text="View All Bookings" onAction="#handleViewAllBookings" styleClass="primary-button"/>
+    </HBox>
+    
+</VBox> 
