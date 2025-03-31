@@ -11,6 +11,20 @@ A modern desktop application for bus ticket booking and management, built with J
 - Modern Material Design UI with blue theme
 - Responsive dashboard with booking statistics
 
+## Screenshots
+
+### Dashboard View
+![Dashboard](screenshots/dashboard.png)
+*Main dashboard showing booking statistics and recent activities*
+
+### Booking Interface
+![Booking](screenshots/booking.png)
+*Bus ticket booking interface with schedule selection*
+
+### My Bookings
+![My Bookings](screenshots/my-bookings.png)
+*User's booking history and management*
+
 ## Prerequisites
 
 - JDK 23 or later
