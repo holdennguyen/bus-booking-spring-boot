@@ -36,8 +36,8 @@ A modern desktop application for bus ticket booking and management, built with J
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd vexe
+git clone https://github.com/holdennguyen/bus-booking-spring-boot.git
+cd bus-booking-spring-boot
 ```
 
 2. Create PostgreSQL database:
@@ -137,18 +137,6 @@ git push origin feature/your-feature-name
 ```
 
 5. Create a Pull Request
-
-## Project Cleanup
-
-The project has been cleaned up to remove unnecessary files and directories:
-- Removed development tool files (`.cursor/`, `.xnotes/`)
-- Removed empty directories (`security/`, `util/`)
-- Updated `.gitignore` to exclude:
-  - IDE-specific files
-  - Build artifacts
-  - OS-generated files
-  - Local environment files
-  - Temporary files
 
 ## License
 
