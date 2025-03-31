@@ -67,10 +67,26 @@
     -fx-alignment: CENTER_LEFT;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
 }
 
 .nav-button:hover {
-    -fx-background-color: #1565C0;
+    -fx-background-color: derive(#1565C0, 20%);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 3);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.nav-button:pressed {
+    -fx-background-color: derive(#1565C0, -10%);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.nav-button.active {
+    -fx-background-color: derive(#1565C0, 30%);
+    -fx-font-weight: bold;
 }
 
 /* Content Area */
