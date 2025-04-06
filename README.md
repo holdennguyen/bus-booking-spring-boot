@@ -2,6 +2,26 @@
 
 A modern desktop application for bus ticket booking and management, built with Java Spring Boot and JavaFX.
 
+## Quick Start
+
+1. **Prerequisites**
+   - JDK 23 or later
+   - Maven 3.8+
+   - PostgreSQL 16+
+
+2. **Installation**
+   ```bash
+   # Clone repository
+   git clone https://github.com/holdennguyen/bus-booking-spring-boot.git
+   cd bus-booking-spring-boot
+
+   # Create database
+   createdb vexe
+
+   # Build and run
+   mvn clean javafx:run
+   ```
+
 ## Features
 
 - User authentication and management
@@ -25,53 +45,17 @@ A modern desktop application for bus ticket booking and management, built with J
 ![My Bookings](screenshots/my-bookings.png)
 *User's booking history and management*
 
-## Prerequisites
+## Documentation
 
-- JDK 23 or later
-- Maven 3.8+
-- PostgreSQL 16+
-- IDE (IntelliJ IDEA recommended)
-
-## Setup & Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/holdennguyen/bus-booking-spring-boot.git
-cd bus-booking-spring-boot
-```
-
-2. Create PostgreSQL database:
-```bash
-createdb vexe
-```
-
-3. Configure database connection in `src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/vexe
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-```
-
-4. Build the project:
-```bash
-mvn clean install
-```
-
-5. Run the application:
-```bash
-mvn clean javafx:run
-```
-
-## UI Theme
-
-The application uses a modern Material Design theme with a blue color scheme:
-- Primary Color: #1976D2 (Material Blue)
-- Secondary Color: #1565C0 (Darker Blue)
-- Accent Color: #2196F3 (Light Blue)
-- Background: #F5F5F5 (Light Gray)
-- Text: #2C3E50 (Dark Gray)
+For detailed technical documentation, please refer to [DOCUMENTATION.md](DOCUMENTATION.md) which includes:
+- System Architecture
+- Database Design
+- UI Components
+- Features and Functionality
+- Development Setup
+- Code Structure
+- Testing and Deployment
+- Troubleshooting
 
 ## Project Structure
 
@@ -90,53 +74,13 @@ src/main/
     └── db/migration/  # Flyway migrations
 ```
 
-## Development Guidelines
-
-1. Database Migrations
-   - The project uses Flyway for database migrations
-   - New migrations should be added to `src/main/resources/db/migration`
-   - Follow the naming convention: `V{version}__{description}.sql`
-
-2. UI Development
-   - All styles are centralized in `src/main/resources/styles/main.css`
-   - Follow the Material Design guidelines
-   - Use the provided color scheme for consistency
-
-3. Testing
-   - Write unit tests for new features
-   - Ensure all tests pass before committing: `mvn test`
-
-## Troubleshooting
-
-1. Database Connection Issues
-   - Verify PostgreSQL is running: `pg_isready`
-   - Check database exists: `psql -l | grep vexe`
-   - Ensure correct credentials in `application.properties`
-
-2. Build/Run Issues
-   - Clear Maven cache: `mvn clean`
-   - Update dependencies: `mvn dependency:resolve`
-   - Check Java version: `java -version`
-
 ## Contributing
 
-1. Pull the latest changes:
-```bash
-git pull origin main
-```
-
-2. Create a new branch:
-```bash
-git checkout -b feature/your-feature-name
-```
-
-3. Make your changes and test locally
-4. Push your changes:
-```bash
-git push origin feature/your-feature-name
-```
-
-5. Create a Pull Request
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a Pull Request
 
 ## License
 
