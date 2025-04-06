@@ -1,66 +1,85 @@
 package com.vexe.service;
 
 import com.vexe.model.Booking;
+import com.vexe.model.BusSchedule;
+import com.vexe.model.User;
 import com.vexe.repository.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class BookingService {
-    
     private final BookingRepository bookingRepository;
-    
-    @Autowired
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
-    
-    public Booking saveBooking(Booking booking) {
+    private final BusScheduleService busScheduleService;
+
+    @Transactional
+    public Booking createBooking(Long scheduleId, User user, String seatNumber, 
+                               String passengerName, String passengerPhone) {
+        BusSchedule schedule = busScheduleService.getScheduleById(scheduleId);
+
+        if (schedule.getAvailableSeats() <= 0) {
+            throw new RuntimeException("No seats available for this schedule");
+        }
+
+        Booking booking = new Booking();
+        booking.setUser(user);
+        booking.setSchedule(schedule);
+        booking.setSeatNumber(seatNumber);
+        booking.setPassengerName(passengerName);
+        booking.setPassengerPhone(passengerPhone);
+        booking.setBookingDateTime(LocalDateTime.now());
+        booking.setTotalPrice(schedule.getPrice());
+        booking.setStatus("CONFIRMED");
+
+        schedule.setAvailableSeats(schedule.getAvailableSeats() - 1);
+        busScheduleService.updateSchedule(scheduleId, schedule);
+
         return bookingRepository.save(booking);
     }
-    
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAllByOrderByBookingDateTimeDesc();
+
+    public List<Booking> getUserBookings(User user) {
+        return bookingRepository.findByUserOrderByBookingDateTimeDesc(user);
     }
-    
-    public long getTotalBookings() {
-        return bookingRepository.count();
+
+    public Booking getBookingById(Long id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
     }
-    
-    public long getTodayBookings() {
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        LocalDateTime endOfDay = startOfDay.plusDays(1);
-        return bookingRepository.countByBookingDateTimeBetween(startOfDay, endOfDay);
+
+    @Transactional
+    public void cancelBooking(Long id) {
+        Booking booking = getBookingById(id);
+        BusSchedule schedule = booking.getSchedule();
+
+        booking.setStatus("CANCELLED");
+        schedule.setAvailableSeats(schedule.getAvailableSeats() + 1);
+
+        busScheduleService.updateSchedule(schedule.getId(), schedule);
+        bookingRepository.save(booking);
     }
-    
-    public Map.Entry<String, Long> getMostPopularRoute() {
-        List<Booking> bookings = bookingRepository.findAll();
-        Map<String, Long> routeCounts = bookings.stream()
-            .collect(Collectors.groupingBy(
-                booking -> booking.getFromCity() + " → " + booking.getToCity(),
-                Collectors.counting()
-            ));
-        
-        return routeCounts.entrySet().stream()
-            .max(Map.Entry.comparingByValue())
-            .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue()))
-            .orElse(null);
+
+    public List<Booking> getBookingsBySchedule(BusSchedule schedule) {
+        return bookingRepository.findBySchedule(schedule);
     }
-    
-    public List<Booking> getRecentBookings(int limit) {
-        return bookingRepository.findTopByOrderByBookingDateTimeDesc(limit);
+
+    public List<Booking> getBookingsByStatus(String status) {
+        return bookingRepository.findByStatus(status);
     }
-    
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
+
+    public List<Booking> getBookingsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+        return bookingRepository.findByBookingDateTimeBetween(startDate, endDate);
+    }
+
+    public List<Booking> getUserBookingsByDateRange(User user, LocalDateTime startDate, LocalDateTime endDate) {
+        return bookingRepository.findUserBookingsByDateRange(user, startDate, endDate);
+    }
+
+    public List<Booking> getBookingsByScheduleAndStatus(BusSchedule schedule, String status) {
+        return bookingRepository.findBookingsByScheduleAndStatus(schedule, status);
     }
 } 

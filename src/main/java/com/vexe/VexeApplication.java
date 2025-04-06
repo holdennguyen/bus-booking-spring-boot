@@ -1,6 +1,7 @@
 package com.vexe;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +14,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class VexeApplication extends Application {
     private ConfigurableApplicationContext springContext;
-    private Parent rootNode;
     private FXMLLoader fxmlLoader;
 
     public static void main(String[] args) {
@@ -22,32 +22,30 @@ public class VexeApplication extends Application {
 
     @Override
     public void init() {
-        springContext = SpringApplication.run(VexeApplication.class);
+        String[] args = getParameters().getRaw().toArray(new String[0]);
+        springContext = SpringApplication.run(VexeApplication.class, args);
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setControllerFactory(springContext::getBean);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        fxmlLoader.setLocation(getClass().getResource("/fxml/MainView.fxml"));
-        rootNode = fxmlLoader.load();
+    public void start(Stage primaryStage) throws Exception {
+        fxmlLoader.setLocation(getClass().getResource("/fxml/main.fxml"));
+        Parent root = fxmlLoader.load();
 
-        Scene scene = new Scene(rootNode);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/styles/main.css").toExternalForm());
 
-        // Set application icon
-        Image icon = new Image(getClass().getResourceAsStream("/images/vexe.png"));
-        stage.getIcons().add(icon);
-        
-        // Set application title
-        stage.setTitle("VeXe - Bus Booking System");
-        
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle("VeXe Bus Booking System");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon.png")));
+        primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
+        primaryStage.show();
     }
 
     @Override
     public void stop() {
         springContext.close();
+        Platform.exit();
     }
 } 
