@@ -17,8 +17,8 @@
     <description>A modern bus ticket booking application built with JavaFX and Spring Boot</description>
 
     <properties>
-        <java.version>21</java.version>
-        <javafx.version>21.0.2</javafx.version>
+        <java.version>23</java.version>
+        <javafx.version>23</javafx.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.30</lombok.version>
@@ -114,7 +114,52 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>com.vexe.VexeApplication</mainClass>
+                    <options>
+                        <option>--module-path</option>
+                        <option>${project.build.directory}/classes:${settings.localRepository}/org/openjfx/javafx-controls/${javafx.version}/javafx-controls-${javafx.version}.jar:${settings.localRepository}/org/openjfx/javafx-fxml/${javafx.version}/javafx-fxml-${javafx.version}.jar:${settings.localRepository}/org/openjfx/javafx-graphics/${javafx.version}/javafx-graphics-${javafx.version}.jar</option>
+                        <option>--add-modules</option>
+                        <option>javafx.controls,javafx.fxml</option>
+                    </options>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>com.vexe.VexeApplication</mainClass>
+                    <classpathScope>runtime</classpathScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>exec-java</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.vexe.VexeApplication</mainClass>
+                            <classpathScope>runtime</classpathScope>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>exec-exec</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>--module-path</argument>
+                                <argument>${project.build.directory}/classes:${settings.localRepository}/org/openjfx/javafx-controls/${javafx.version}/javafx-controls-${javafx.version}.jar:${settings.localRepository}/org/openjfx/javafx-fxml/${javafx.version}/javafx-fxml-${javafx.version}.jar:${settings.localRepository}/org/openjfx/javafx-graphics/${javafx.version}/javafx-graphics-${javafx.version}.jar</argument>
+                                <argument>--add-modules</argument>
+                                <argument>javafx.controls,javafx.fxml</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>com.vexe.VexeApplication</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
