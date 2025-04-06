@@ -101,6 +101,72 @@ VeXe is a modern desktop application for bus ticket booking and management. It's
    If you want to use different credentials, update them in:
    `src/main/resources/application.properties`
 
+4. Choose one of the following database initialization methods:
+
+   **Method 1: Using the default incremental migrations (recommended for development)**
+   
+   When you run the application with the default profile, Flyway will automatically:
+   - Create all required tables (users, buses, routes, bookings, bus_schedules, etc.)
+   - Apply all migrations in order (V1 through V7)
+   - Populate the database with sample data
+
+   **Method 2: Using the combined single migration (recommended for new team members)**
+   
+   If you prefer a simpler, one-time setup:
+   ```bash
+   # Run the application with the combined profile
+   mvn clean javafx:run -Dspring.profiles.active=combined
+   ```
+   This will:
+   - Use a single migration file that creates all tables at once
+   - Load all sample data in one step
+   - Simplify the setup process for new developers
+
+5. To manually set up the database with the same state as the development environment:
+   ```bash
+   # Connect to your PostgreSQL instance
+   psql -U postgres
+   
+   # Create the database if it doesn't exist
+   CREATE DATABASE vexe;
+   
+   # Connect to the vexe database
+   \c vexe
+   
+   # Exit psql
+   \q
+   
+   # For incremental migrations
+   mvn flyway:clean flyway:migrate
+   
+   # OR for the combined migration
+   mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+   ```
+
+6. Verify the database has been properly set up:
+   ```bash
+   # Connect to the database
+   psql -U postgres -d vexe
+   
+   # List tables
+   \dt
+   
+   # Check sample data in bus_schedules
+   SELECT count(*) FROM bus_schedules;
+   
+   # Exit psql
+   \q
+   ```
+
+7. Migration files location:
+   - **Incremental migrations**: `src/main/resources/db/migration/`
+     - `V1__init_schema.sql`: Initial database schema
+     - `V2-V6`: Schema modifications and updates
+     - `V7__april_2025_sample_data.sql`: Complete sample dataset for testing
+   
+   - **Combined migration**: `src/main/resources/db/migration-combined/`
+     - `V1__schema_and_data.sql`: Complete schema and data in a single file
+
 ### IDE Setup
 1. Open NetBeans
 2. Go to File → Open Project
@@ -215,11 +281,17 @@ src/main/
 You can run the application directly from the command line:
 
 ```bash
-# Using JavaFX Maven Plugin (recommended)
+# Using JavaFX Maven Plugin with incremental migrations (default)
 mvn clean javafx:run
+
+# Using JavaFX Maven Plugin with combined migration
+mvn clean javafx:run -Dspring.profiles.active=combined
 
 # Using Exec Maven Plugin
 mvn exec:java
+
+# Using Exec Maven Plugin with combined migration
+mvn exec:java -Dspring.profiles.active=combined
 ```
 
 The application should start and automatically:
@@ -228,11 +300,37 @@ The application should start and automatically:
 - Load sample data
 - Launch the JavaFX interface
 
+### Expected Data After Setup
+
+Once the application is set up correctly, you should have:
+
+1. **Bus Routes**: Routes between popular Vietnamese cities
+   - Ho Chi Minh City ↔ Da Lat
+   - Ho Chi Minh City ↔ Nha Trang
+   - Da Lat ↔ Nha Trang
+
+2. **Bus Types**:
+   - Standard - Basic service, lower price point
+   - VIP - Enhanced comfort, mid-range price
+   - Luxury - Premium service with additional amenities
+
+3. **Sample Schedules**:
+   - Multiple departure times throughout the day
+   - Various price points based on bus type
+   - April 2025 sample data loaded
+
+4. **Amenities**:
+   - Basic amenities for all buses (Air Conditioning, Comfortable Seats)
+   - Enhanced amenities for VIP buses (Snack Service, Personal TV)
+   - Premium amenities for Luxury buses (Massage Seats, Blanket & Pillow)
+
+You can verify this data through the application UI or by querying the database directly.
+
 ## Troubleshooting
 
 ### Database Issues
 1. If you get connection errors:
-   - Verify PostgreSQL is running
+   - Verify PostgreSQL is running (`pg_isready` command)
    - Check credentials in application.properties
    - Ensure database 'vexe' exists
 
@@ -243,9 +341,60 @@ The application should start and automatically:
 
    # Check migration status
    SELECT * FROM flyway_schema_history;
+   
+   # Look for failed migrations (success = 0)
+   SELECT * FROM flyway_schema_history WHERE success = 0;
 
-   # If needed, clean and rerun migrations
+   # Exit psql
+   \q
+   
+   # Reset and rerun migrations if needed
    mvn flyway:clean flyway:migrate
+   
+   # Or use the combined migration approach
+   mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+   ```
+
+3. Common Flyway errors:
+   - **Migration checksum mismatch**: You've modified a migration file that was already applied
+     ```bash
+     # Fix by cleaning and migrating (WARNING: This will DELETE all data)
+     mvn flyway:clean flyway:migrate
+     
+     # Or try the combined migration approach instead
+     mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+     ```
+   
+   - **Can't find migration files**: Check that files are in the correct directory
+     - Default migrations: `src/main/resources/db/migration`
+     - Combined migration: `src/main/resources/db/migration-combined`
+   
+   - **Schema version table exists but is empty**: Database is in an inconsistent state
+     ```bash
+     # Repair the Flyway schema history table
+     mvn flyway:repair
+     
+     # Then run migrations again
+     mvn flyway:migrate
+     ```
+
+4. When switching between migration approaches:
+   ```bash
+   # Always clean before switching approaches
+   mvn flyway:clean -Dspring.profiles.active=combined
+   ```
+
+5. Manually check tables:
+   ```bash
+   # Connect to database
+   psql -U postgres -d vexe
+   
+   # Check bus_schedules content
+   SELECT * FROM bus_schedules LIMIT 5;
+   
+   # Check related tables
+   \d+ bus_schedules
+   \d+ bookings
    ```
 
 ### Build Issues
@@ -335,4 +484,4 @@ The application should start and automatically:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
