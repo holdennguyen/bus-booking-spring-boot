@@ -2,18 +2,48 @@
 
 A modern desktop application for bus ticket booking and management, built with Java Spring Boot and JavaFX.
 
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Quick Start](#quick-start)
+3. [Features](#features)
+4. [Setup Guide](#setup-guide)
+5. [System Architecture](#system-architecture)
+6. [Database Design](#database-design)
+7. [User Interface](#user-interface)
+8. [Code Structure](#code-structure)
+9. [Running the Application](#running-the-application)
+10. [Troubleshooting](#troubleshooting)
+11. [Development Workflow](#development-workflow)
+12. [Screenshots](#screenshots)
+
+## Introduction
+
+VeXe is a modern desktop application for bus ticket booking and management. It's designed to provide a seamless experience for both users and administrators in managing bus schedules, routes, and bookings.
+
+### Purpose
+- Simplify bus ticket booking process
+- Provide real-time schedule management
+- Track booking history and analytics
+- Offer a modern, user-friendly interface
+
+### Target Users
+- Bus passengers
+- Bus operators
+- System administrators
+
 ## Quick Start
 
 1. **Prerequisites**
-   - JDK 23 or later
+   - JDK 23
    - Maven 3.8+
    - PostgreSQL 16+
+   - NetBeans IDE 19+ (recommended)
 
 2. **Installation**
    ```bash
    # Clone repository
-   git clone https://github.com/holdennguyen/bus-booking-spring-boot.git
-   cd bus-booking-spring-boot
+   git clone https://github.com/YOUR_USERNAME/vexe.git
+   cd vexe
 
    # Create database
    createdb vexe
@@ -30,6 +60,382 @@ A modern desktop application for bus ticket booking and management, built with J
 - Order history tracking and analytics
 - Modern Material Design UI with blue theme
 - Responsive dashboard with booking statistics
+- Database migrations with Flyway
+
+## Setup Guide
+
+### Prerequisites
+
+1. **Java Development Kit (JDK)**
+   - Install JDK 23
+   - Download from: https://adoptium.net/
+   - Set JAVA_HOME environment variable
+
+2. **NetBeans IDE**
+   - Download NetBeans 19 or later
+   - Download from: https://netbeans.apache.org/
+   - Ensure it's configured to use JDK 23
+
+3. **PostgreSQL**
+   - Install PostgreSQL 16
+   - Download from: https://www.postgresql.org/download/
+   - Remember your postgres user password during installation
+
+4. **Maven**
+   - NetBeans includes Maven, but you can install it separately
+   - Download from: https://maven.apache.org/
+   - Minimum version required: 3.8+
+
+### Database Setup
+1. Open pgAdmin or your preferred PostgreSQL client
+2. Create a new database:
+   ```sql
+   CREATE DATABASE vexe;
+   ```
+3. Configure database connection:
+   - Username: postgres
+   - Password: postgres
+   - Database: vexe
+   - Port: 5432
+
+   If you want to use different credentials, update them in:
+   `src/main/resources/application.properties`
+
+4. Choose one of the following database initialization methods:
+
+   **Method 1: Using the default incremental migrations (recommended for development)**
+   
+   When you run the application with the default profile, Flyway will automatically:
+   - Create all required tables (users, buses, routes, bookings, bus_schedules, etc.)
+   - Apply all migrations in order (V1 through V7)
+   - Populate the database with sample data
+
+   **Method 2: Using the combined single migration (recommended for new team members)**
+   
+   If you prefer a simpler, one-time setup:
+   ```bash
+   # Run the application with the combined profile
+   mvn clean javafx:run -Dspring.profiles.active=combined
+   ```
+   This will:
+   - Use a single migration file that creates all tables at once
+   - Load all sample data in one step
+   - Simplify the setup process for new developers
+
+5. To manually set up the database with the same state as the development environment:
+   ```bash
+   # Connect to your PostgreSQL instance
+   psql -U postgres
+   
+   # Create the database if it doesn't exist
+   CREATE DATABASE vexe;
+   
+   # Connect to the vexe database
+   \c vexe
+   
+   # Exit psql
+   \q
+   
+   # For incremental migrations
+   mvn flyway:clean flyway:migrate
+   
+   # OR for the combined migration
+   mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+   ```
+
+6. Verify the database has been properly set up:
+   ```bash
+   # Connect to the database
+   psql -U postgres -d vexe
+   
+   # List tables
+   \dt
+   
+   # Check sample data in bus_schedules
+   SELECT count(*) FROM bus_schedules;
+   
+   # Exit psql
+   \q
+   ```
+
+7. Migration files location:
+   - **Incremental migrations**: `src/main/resources/db/migration/`
+     - `V1__init_schema.sql`: Initial database schema
+     - `V2-V6`: Schema modifications and updates
+     - `V7__april_2025_sample_data.sql`: Complete sample dataset for testing
+   
+   - **Combined migration**: `src/main/resources/db/migration-combined/`
+     - `V1__schema_and_data.sql`: Complete schema and data in a single file
+
+### IDE Setup
+1. Open NetBeans
+2. Go to File → Open Project
+3. Navigate to the cloned vexe directory
+4. Select the project and click Open
+5. Right-click on the project → Properties
+   - Ensure Java platform is set to JDK 23
+   - Verify Maven settings are correct
+
+## System Architecture
+
+### Technology Stack
+- **Frontend**: JavaFX (Desktop UI)
+- **Backend**: Spring Boot (Java)
+- **Database**: PostgreSQL
+- **Build Tool**: Maven
+- **Database Migration**: Flyway
+
+### Architecture Overview
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  JavaFX UI      │◄───►│  Spring Boot    │◄───►│  PostgreSQL    │
+│  (Frontend)     │     │  (Backend)      │     │  (Database)    │
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+## Database Design
+
+### Tables Description
+
+1. **Users Table**
+   - Stores user information
+   - Fields: id, username, password, email, full_name, phone
+   - Used for authentication and user management
+
+2. **Bookings Table**
+   - Records all ticket bookings
+   - Fields: id, booking_date_time, from_city, to_city, travel_date, travel_time, passenger_count, total_price, bus_type
+   - Tracks booking history and information
+
+3. **Buses Table**
+   - Manages bus information
+   - Fields: id, bus_number, capacity, bus_type
+   - Handles bus management
+
+4. **Routes Table**
+   - Manages route information
+   - Fields: id, origin, destination, distance, duration
+   - Handles route management
+
+5. **Bus_Schedules Table**
+   - Manages schedule information
+   - Relates buses to routes with departure times
+   - Fields: id, bus_id, route_id, departure_time, price
+
+## User Interface
+
+### Main Components
+
+1. **Dashboard**
+   - Overview of booking statistics
+   - Recent activities
+   - Quick access to main features
+
+2. **Booking Interface**
+   - Route selection
+   - Schedule browsing
+   - Seat selection
+   - Payment processing
+
+3. **My Bookings**
+   - Booking history
+   - Ticket management
+   - Cancellation options
+
+### UI Theme
+- Primary Color: #1976D2 (Material Blue)
+- Secondary Color: #1565C0 (Darker Blue)
+- Accent Color: #2196F3 (Light Blue)
+- Background: #F5F5F5 (Light Gray)
+- Text: #2C3E50 (Dark Gray)
+
+## Code Structure
+
+### Project Organization
+```
+src/main/
+├── java/com/vexe/
+│   ├── config/         # Configuration classes
+│   ├── controller/     # Application controllers
+│   ├── model/          # Entity classes
+│   ├── repository/     # Data access layer
+│   ├── service/        # Business logic
+│   └── ui/             # JavaFX views
+└── resources/
+    ├── styles/         # CSS stylesheets
+    ├── fxml/           # JavaFX layout files
+    └── db/migration/   # Flyway migrations
+```
+
+## Running the Application
+
+### Using NetBeans
+1. Right-click on the project
+2. Select "Clean and Build"
+3. Once build is successful, click "Run"
+   - Or use: Run → Run Project
+
+### Using Maven Command Line
+You can run the application directly from the command line:
+
+```bash
+# Using JavaFX Maven Plugin with incremental migrations (default)
+mvn clean javafx:run
+
+# Using JavaFX Maven Plugin with combined migration
+mvn clean javafx:run -Dspring.profiles.active=combined
+
+# Using Exec Maven Plugin
+mvn exec:java
+
+# Using Exec Maven Plugin with combined migration
+mvn exec:java -Dspring.profiles.active=combined
+```
+
+The application should start and automatically:
+- Create database tables (if not exist)
+- Run Flyway migrations
+- Load sample data
+- Launch the JavaFX interface
+
+### Expected Data After Setup
+
+Once the application is set up correctly, you should have:
+
+1. **Bus Routes**: Routes between popular Vietnamese cities
+   - Ho Chi Minh City ↔ Da Lat
+   - Ho Chi Minh City ↔ Nha Trang
+   - Da Lat ↔ Nha Trang
+
+2. **Bus Types**:
+   - Standard - Basic service, lower price point
+   - VIP - Enhanced comfort, mid-range price
+   - Luxury - Premium service with additional amenities
+
+3. **Sample Schedules**:
+   - Multiple departure times throughout the day
+   - Various price points based on bus type
+   - April 2025 sample data loaded
+
+4. **Amenities**:
+   - Basic amenities for all buses (Air Conditioning, Comfortable Seats)
+   - Enhanced amenities for VIP buses (Snack Service, Personal TV)
+   - Premium amenities for Luxury buses (Massage Seats, Blanket & Pillow)
+
+You can verify this data through the application UI or by querying the database directly.
+
+## Troubleshooting
+
+### Database Issues
+1. If you get connection errors:
+   - Verify PostgreSQL is running (`pg_isready` command)
+   - Check credentials in application.properties
+   - Ensure database 'vexe' exists
+
+2. If migrations fail:
+   ```bash
+   # Connect to database
+   psql -U postgres -d vexe
+
+   # Check migration status
+   SELECT * FROM flyway_schema_history;
+   
+   # Look for failed migrations (success = 0)
+   SELECT * FROM flyway_schema_history WHERE success = 0;
+
+   # Exit psql
+   \q
+   
+   # Reset and rerun migrations if needed
+   mvn flyway:clean flyway:migrate
+   
+   # Or use the combined migration approach
+   mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+   ```
+
+3. Common Flyway errors:
+   - **Migration checksum mismatch**: You've modified a migration file that was already applied
+     ```bash
+     # Fix by cleaning and migrating (WARNING: This will DELETE all data)
+     mvn flyway:clean flyway:migrate
+     
+     # Or try the combined migration approach instead
+     mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
+     ```
+   
+   - **Can't find migration files**: Check that files are in the correct directory
+     - Default migrations: `src/main/resources/db/migration`
+     - Combined migration: `src/main/resources/db/migration-combined`
+   
+   - **Schema version table exists but is empty**: Database is in an inconsistent state
+     ```bash
+     # Repair the Flyway schema history table
+     mvn flyway:repair
+     
+     # Then run migrations again
+     mvn flyway:migrate
+     ```
+
+4. When switching between migration approaches:
+   ```bash
+   # Always clean before switching approaches
+   mvn flyway:clean -Dspring.profiles.active=combined
+   ```
+
+5. Manually check tables:
+   ```bash
+   # Connect to database
+   psql -U postgres -d vexe
+   
+   # Check bus_schedules content
+   SELECT * FROM bus_schedules LIMIT 5;
+   
+   # Check related tables
+   \d+ bus_schedules
+   \d+ bookings
+   ```
+
+### Build Issues
+1. Maven dependency problems:
+   ```bash
+   mvn clean install -U
+   ```
+
+2. JavaFX not found:
+   - Verify JavaFX dependencies in pom.xml
+   - Check Java version compatibility
+   - Make sure your JDK has the appropriate modules
+
+### Runtime Issues
+1. Port conflicts:
+   - Check if PostgreSQL is running on default port 5432
+   - Verify no other application is using required ports
+
+2. JavaFX module issues:
+   - If running from command line and getting module errors, try using the JavaFX Maven plugin:
+   ```bash
+   mvn javafx:run
+   ```
+
+## Development Workflow
+1. Always pull latest changes before starting work:
+   ```bash
+   git pull origin main
+   ```
+
+2. Create feature branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. Regular commits:
+   ```bash
+   git add .
+   git commit -m "Descriptive message"
+   git push origin feature/your-feature-name
+   ```
 
 ## Screenshots
 
@@ -45,34 +451,28 @@ A modern desktop application for bus ticket booking and management, built with J
 ![My Bookings](screenshots/my-bookings.png)
 *User's booking history and management*
 
-## Documentation
+## Testing and Deployment
 
-For detailed technical documentation, please refer to [DOCUMENTATION.md](DOCUMENTATION.md) which includes:
-- System Architecture
-- Database Design
-- UI Components
-- Features and Functionality
-- Development Setup
-- Code Structure
-- Testing and Deployment
-- Troubleshooting
+### Testing
+1. **Unit Testing**
+   ```bash
+   mvn test
+   ```
 
-## Project Structure
+2. **Integration Testing**
+   - Database integration tests
+   - UI component tests
 
-```
-src/main/
-├── java/com/vexe/
-│   ├── config/         # Configuration classes
-│   ├── controller/     # Application controllers
-│   ├── model/         # Entity classes
-│   ├── repository/    # Data access layer
-│   ├── service/       # Business logic
-│   └── ui/           # JavaFX views
-└── resources/
-    ├── styles/        # CSS stylesheets
-    ├── fxml/         # JavaFX layout files
-    └── db/migration/  # Flyway migrations
-```
+### Deployment
+1. **Build Process**
+   ```bash
+   mvn clean package
+   ```
+
+2. **Database Migration**
+   ```bash
+   mvn flyway:migrate
+   ```
 
 ## Contributing
 
@@ -84,4 +484,4 @@ src/main/
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.

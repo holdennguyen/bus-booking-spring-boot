@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run.spring</actionName>
+        <displayName>Run with Spring Boot</displayName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <mainClass>com.vexe.VexeApplication</mainClass>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug.spring</actionName>
+        <displayName>Debug with Spring Boot</displayName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <mainClass>com.vexe.VexeApplication</mainClass>
+            <jvm.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</jvm.args>
+            <jpda.listen>true</jpda.listen>
+            <spring-boot.run.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</spring-boot.run.jvmArguments>
+        </properties>
+    </action>
+</actions> 

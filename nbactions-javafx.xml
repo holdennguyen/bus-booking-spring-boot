@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run.single.main</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>org.openjfx:javafx-maven-plugin:0.0.8:run</goal>
+        </goals>
+        <properties>
+            <mainClass>${packageClassName}</mainClass>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug.single.main</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>org.openjfx:javafx-maven-plugin:0.0.8:run</goal>
+        </goals>
+        <properties>
+            <mainClass>${packageClassName}</mainClass>
+            <debug>true</debug>
+        </properties>
+    </action>
+</actions> 
