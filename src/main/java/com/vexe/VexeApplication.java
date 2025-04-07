@@ -8,9 +8,15 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.vexe")
+@EntityScan(basePackages = "com.vexe.model")
+@EnableJpaRepositories(basePackages = "com.vexe.repository")
 public class VexeApplication extends Application {
     private ConfigurableApplicationContext springContext;
     private Parent rootNode;
