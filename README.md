@@ -290,17 +290,11 @@ The codebase follows these best practices:
 You can run the application directly from the command line:
 
 ```bash
-# Using JavaFX Maven Plugin with incremental migrations (default)
+# Using JavaFX Maven Plugin (default)
 mvn clean javafx:run
-
-# Using JavaFX Maven Plugin with combined migration
-mvn clean javafx:run -Dspring.profiles.active=combined
 
 # Using Exec Maven Plugin
 mvn exec:java
-
-# Using Exec Maven Plugin with combined migration
-mvn exec:java -Dspring.profiles.active=combined
 ```
 
 The application should start and automatically:
@@ -375,7 +369,6 @@ You can verify this data through the application UI or by querying the database 
      ```
    
    - **Can't find migration files**: Check that files are in the correct directory
-     - Default migrations: `src/main/resources/db/migration`
      - Combined migration: `src/main/resources/db/migration-combined`
    
    - **Schema version table exists but is empty**: Database is in an inconsistent state
