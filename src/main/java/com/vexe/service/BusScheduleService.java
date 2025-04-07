@@ -14,31 +14,31 @@ public class BusScheduleService {
     public BusScheduleService() {
         // Initialize sample schedules
         schedules.add(new BusSchedule("06:00", "Ho Chi Minh", "Da Lat", "Luxury", 30, 450000, 420,
-            Arrays.asList("Air Conditioning", "Reclining Seats", "Blanket", "Snacks"), true, true,
+            Arrays.asList("Air Conditioning", "Reclining Seats", "Blanket", "Snacks", "WiFi", "USB Power"),
             "Via Dau Giay - Bao Loc"));
         
         schedules.add(new BusSchedule("07:30", "Ho Chi Minh", "Da Lat", "Standard", 45, 280000, 450,
-            Arrays.asList("Air Conditioning", "Standard Seats"), false, false,
+            Arrays.asList("Air Conditioning", "Standard Seats"),
             "Via Dau Giay - Bao Loc"));
         
         schedules.add(new BusSchedule("09:00", "Ho Chi Minh", "Nha Trang", "VIP", 20, 550000, 510,
-            Arrays.asList("Air Conditioning", "Massage Seats", "Blanket", "Meals", "Personal TV"), true, true,
+            Arrays.asList("Air Conditioning", "Massage Seats", "Blanket", "Meals", "Personal TV", "WiFi", "USB Power"),
             "Via Dau Giay - Phan Thiet - Cam Ranh"));
         
         schedules.add(new BusSchedule("10:30", "Ho Chi Minh", "Vung Tau", "Standard", 35, 150000, 180,
-            Arrays.asList("Air Conditioning", "Standard Seats"), false, false,
+            Arrays.asList("Air Conditioning", "Standard Seats"),
             "Direct Route"));
         
         schedules.add(new BusSchedule("12:00", "Ho Chi Minh", "Da Lat", "VIP", 25, 500000, 420,
-            Arrays.asList("Air Conditioning", "Massage Seats", "Blanket", "Meals"), true, true,
+            Arrays.asList("Air Conditioning", "Massage Seats", "Blanket", "Meals", "WiFi", "USB Power"),
             "Via Dau Giay - Bao Loc"));
         
         schedules.add(new BusSchedule("14:00", "Ho Chi Minh", "Nha Trang", "Luxury", 28, 450000, 510,
-            Arrays.asList("Air Conditioning", "Reclining Seats", "Blanket", "Snacks"), true, true,
+            Arrays.asList("Air Conditioning", "Reclining Seats", "Blanket", "Snacks", "WiFi", "USB Power"),
             "Via Dau Giay - Phan Thiet - Cam Ranh"));
         
         schedules.add(new BusSchedule("16:00", "Ho Chi Minh", "Da Lat", "Standard", 40, 280000, 450,
-            Arrays.asList("Air Conditioning", "Standard Seats"), false, false,
+            Arrays.asList("Air Conditioning", "Standard Seats"),
             "Via Dau Giay - Bao Loc"));
         
         // Initialize bus type features

@@ -1,9 +1,7 @@
 package com.vexe.model;
 
 import jakarta.persistence.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import lombok.AllArgsConstructor;
+import javafx.beans.property.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +12,6 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "bookings")
 public class Booking {
@@ -47,19 +44,18 @@ public class Booking {
     private LocalDateTime bookingDateTime;
     
     @Transient
-    private StringProperty bookingDateTimeProperty;
+    private final StringProperty bookingDateTimeProperty = new SimpleStringProperty();
     
-    public StringProperty getBookingDateTimeProperty() {
-        if (bookingDateTimeProperty == null) {
-            bookingDateTimeProperty = new SimpleStringProperty(bookingDateTime.toString());
-        }
-        return bookingDateTimeProperty;
+    @PostLoad
+    private void updateProperties() {
+        bookingDateTimeProperty.set(bookingDateTime.toString());
     }
     
     @PrePersist
     protected void onCreate() {
         if (bookingDateTime == null) {
             bookingDateTime = LocalDateTime.now();
+            bookingDateTimeProperty.set(bookingDateTime.toString());
         }
     }
     
@@ -73,5 +69,6 @@ public class Booking {
         this.passengerCount = passengerCount;
         this.totalPrice = totalPrice;
         this.bookingDateTime = LocalDateTime.now();
+        this.bookingDateTimeProperty.set(bookingDateTime.toString());
     }
 } 
