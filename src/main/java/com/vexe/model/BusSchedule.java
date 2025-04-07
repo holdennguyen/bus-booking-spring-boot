@@ -1,7 +1,6 @@
 package com.vexe.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "bus_schedules")
 public class BusSchedule {
@@ -30,14 +28,11 @@ public class BusSchedule {
     @Column(name = "amenity")
     private List<String> amenities;
     
-    private boolean hasWifi;
-    private boolean hasUSBPower;
     private String routeInfo; // Additional stops or route details
     
     public BusSchedule(String time, String fromCity, String toCity, String busType, 
                       int availableSeats, double price, int estimatedDuration,
-                      List<String> amenities, boolean hasWifi, boolean hasUSBPower, 
-                      String routeInfo) {
+                      List<String> amenities, String routeInfo) {
         this.time = time;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -46,8 +41,10 @@ public class BusSchedule {
         this.price = price;
         this.estimatedDuration = estimatedDuration;
         this.amenities = amenities;
-        this.hasWifi = hasWifi;
-        this.hasUSBPower = hasUSBPower;
         this.routeInfo = routeInfo;
+    }
+    
+    public boolean hasAmenity(String amenity) {
+        return amenities != null && amenities.contains(amenity);
     }
 }

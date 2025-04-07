@@ -185,34 +185,28 @@ public class BookingController {
     
     private void showScheduleDetails(BusSchedule schedule) {
         String details = String.format("""
-            Schedule Details
-            
             Time: %s
-            Route: %s → %s
+            From: %s
+            To: %s
             Bus Type: %s
-            Duration: %d hours %d minutes
             Available Seats: %d
-            Price: %,.0f VND
+            Price: %.2f VND
             Route Info: %s
-            
             Amenities:
             %s
-            
-            WiFi Available: %s
+            WiFi: %s
             USB Power: %s
             """,
             schedule.getTime(),
             schedule.getFromCity(),
             schedule.getToCity(),
             schedule.getBusType(),
-            schedule.getEstimatedDuration() / 60,
-            schedule.getEstimatedDuration() % 60,
             schedule.getAvailableSeats(),
             schedule.getPrice(),
             schedule.getRouteInfo(),
             String.join("\n", schedule.getAmenities()),
-            schedule.isHasWifi() ? "Yes" : "No",
-            schedule.isHasUSBPower() ? "Yes" : "No"
+            schedule.hasAmenity("WiFi") ? "Yes" : "No",
+            schedule.hasAmenity("USB Power") ? "Yes" : "No"
         );
         
         showAlert(Alert.AlertType.INFORMATION, "Schedule Details", details);

@@ -19,12 +19,6 @@ public class MainController {
     @FXML private StackPane contentArea;
     @FXML private MenuItem exitMenuItem;
     @FXML private MenuItem aboutMenuItem;
-    @FXML private MenuItem appearanceMenuItem;
-    @FXML private MenuItem languageMenuItem;
-    @FXML private MenuItem notificationsMenuItem;
-    @FXML private MenuItem profileMenuItem;
-    @FXML private MenuItem userGuideMenuItem;
-    @FXML private MenuItem supportMenuItem;
     @FXML private Button dashboardButton;
     @FXML private Button bookTicketButton;
     @FXML private Button myBookingsButton;
@@ -41,12 +35,6 @@ public class MainController {
         // Initialize menu items
         exitMenuItem.setOnAction(event -> handleExit());
         aboutMenuItem.setOnAction(event -> showAboutDialog());
-        appearanceMenuItem.setOnAction(event -> showAppearanceSettings());
-        languageMenuItem.setOnAction(event -> showLanguageSettings());
-        notificationsMenuItem.setOnAction(event -> showNotificationSettings());
-        profileMenuItem.setOnAction(event -> showProfileSettings());
-        userGuideMenuItem.setOnAction(event -> showUserGuide());
-        supportMenuItem.setOnAction(event -> showSupport());
         
         // Initialize navigation buttons
         dashboardButton.setOnAction(event -> showDashboard());
@@ -69,50 +57,6 @@ public class MainController {
         }
     }
     
-    private void showAppearanceSettings() {
-        showDialog("Appearance Settings", 
-                  "Customize the look and feel of your application",
-                  "Theme: Light\nFont Size: Medium\nColor Scheme: Default");
-    }
-    
-    private void showLanguageSettings() {
-        showDialog("Language Settings",
-                  "Choose your preferred language",
-                  "Current Language: English\nAvailable Languages:\n- English\n- Vietnamese");
-    }
-    
-    private void showNotificationSettings() {
-        showDialog("Notification Settings",
-                  "Manage your notification preferences",
-                  "Email Notifications: Enabled\nPush Notifications: Disabled\nBooking Reminders: Enabled");
-    }
-    
-    private void showProfileSettings() {
-        showDialog("Profile Settings",
-                  "Manage your profile information",
-                  "Name: User\nEmail: user@example.com\nPhone: Not set");
-    }
-    
-    private void showUserGuide() {
-        showDialog("User Guide",
-                  "Learn how to use Vexe Bus Booking System",
-                  "1. Book a Ticket\n2. View Your Bookings\n3. Manage Profile");
-    }
-    
-    private void showSupport() {
-        showDialog("Support",
-                  "Get help with Vexe Bus Booking System",
-                  "Email: support@vexe.com\nPhone: 1-800-VEXE\nHours: 24/7");
-    }
-    
-    private void showDialog(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-    
     public void showDashboard() {
         loadView("/fxml/DashboardView.fxml", "Error loading dashboard view");
     }
@@ -132,16 +76,21 @@ public class MainController {
             Parent view = loader.load();
             contentArea.getChildren().setAll(view);
         } catch (IOException e) {
-            e.printStackTrace();
             showError(errorMessage, e);
         }
     }
     
     private void showAboutDialog() {
+        showDialog("About Vexe Bus Booking System", 
+                  null,
+                  "Vexe Bus Booking System\nVersion 1.0\n\nDeveloped by 23DTH1A Group 6");
+    }
+    
+    private void showDialog(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About Vexe Bus Booking System");
-        alert.setHeaderText(null);
-        alert.setContentText("Vexe Bus Booking System\nVersion 1.0\n\nDeveloped by 23DTH1A Group 6");
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
         alert.showAndWait();
     }
     
