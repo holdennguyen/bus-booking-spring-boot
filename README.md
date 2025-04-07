@@ -101,49 +101,16 @@ VeXe is a modern desktop application for bus ticket booking and management. It's
    If you want to use different credentials, update them in:
    `src/main/resources/application.properties`
 
-4. Choose one of the following database initialization methods:
-
-   **Method 1: Using the default incremental migrations (recommended for development)**
-   
-   When you run the application with the default profile, Flyway will automatically:
-   - Create all required tables (users, buses, routes, bookings, bus_schedules, etc.)
-   - Apply all migrations in order (V1 through V7)
-   - Populate the database with sample data
-
-   **Method 2: Using the combined single migration (recommended for new team members)**
-   
-   If you prefer a simpler, one-time setup:
+4. Initialize the database using Flyway migration:
    ```bash
-   # Run the application with the combined profile
-   mvn clean javafx:run -Dspring.profiles.active=combined
+   # Clean and migrate the database
+   mvn flyway:clean flyway:migrate
    ```
    This will:
-   - Use a single migration file that creates all tables at once
-   - Load all sample data in one step
-   - Simplify the setup process for new developers
+   - Create all required tables (users, buses, routes, bookings, bus_schedules, etc.)
+   - Load all sample data for testing
 
-5. To manually set up the database with the same state as the development environment:
-   ```bash
-   # Connect to your PostgreSQL instance
-   psql -U postgres
-   
-   # Create the database if it doesn't exist
-   CREATE DATABASE vexe;
-   
-   # Connect to the vexe database
-   \c vexe
-   
-   # Exit psql
-   \q
-   
-   # For incremental migrations
-   mvn flyway:clean flyway:migrate
-   
-   # OR for the combined migration
-   mvn flyway:clean flyway:migrate -Dspring.profiles.active=combined
-   ```
-
-6. Verify the database has been properly set up:
+5. Verify the database has been properly set up:
    ```bash
    # Connect to the database
    psql -U postgres -d vexe
@@ -158,14 +125,8 @@ VeXe is a modern desktop application for bus ticket booking and management. It's
    \q
    ```
 
-7. Migration files location:
-   - **Incremental migrations**: `src/main/resources/db/migration/`
-     - `V1__init_schema.sql`: Initial database schema
-     - `V2-V6`: Schema modifications and updates
-     - `V7__april_2025_sample_data.sql`: Complete sample dataset for testing
-   
-   - **Combined migration**: `src/main/resources/db/migration-combined/`
-     - `V1__schema_and_data.sql`: Complete schema and data in a single file
+6. Migration file location:
+   - `src/main/resources/db/migration-combined/V1__schema_and_data.sql`: Complete schema and data in a single file
 
 ### IDE Setup
 1. Open NetBeans
