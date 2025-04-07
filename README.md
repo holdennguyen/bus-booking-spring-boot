@@ -214,21 +214,69 @@ VeXe is a modern desktop application for bus ticket booking and management. It's
 
 ## Code Structure
 
-### Project Organization
-```
-src/main/
-├── java/com/vexe/
-│   ├── config/         # Configuration classes
-│   ├── controller/     # Application controllers
-│   ├── model/          # Entity classes
-│   ├── repository/     # Data access layer
-│   ├── service/        # Business logic
-│   └── ui/             # JavaFX views
-└── resources/
-    ├── styles/         # CSS stylesheets
-    ├── fxml/           # JavaFX layout files
-    └── db/migration/   # Flyway migrations
-```
+### Model Layer
+The model layer uses JPA entities with optimized design patterns:
+
+1. **BusSchedule**
+   - Simplified amenities handling using `@ElementCollection`
+   - Amenities include: WiFi, USB Power, Air Conditioning, etc.
+   - Helper methods for amenity checking (e.g., `hasAmenity()`)
+   - Clean constructor design without redundant fields
+
+2. **Booking**
+   - Efficient JavaFX property handling
+   - Automatic property updates with `@PostLoad`
+   - Optimized date/time management
+   - BigDecimal for precise price calculations
+
+### Service Layer
+Services implement business logic with clean separation of concerns:
+
+1. **BusScheduleService**
+   - Manages bus schedules and routes
+   - Handles amenity-based filtering
+   - Provides bus type features and pricing
+   - Efficient schedule search algorithms
+
+2. **BookingService**
+   - Handles booking creation and management
+   - Maintains booking history
+   - Provides booking statistics
+
+### Controller Layer
+Controllers handle UI logic with modern patterns:
+
+1. **BookingController**
+   - Clean separation of UI and business logic
+   - Efficient table view management
+   - Responsive search functionality
+   - Clear error handling and user feedback
+
+2. **MainController**
+   - Streamlined navigation
+   - Essential menu functionality
+   - Focused feature set
+
+### Best Practices
+The codebase follows these best practices:
+
+1. **Clean Code**
+   - No redundant fields or methods
+   - Clear naming conventions
+   - Focused class responsibilities
+   - Efficient data structures
+
+2. **Performance**
+   - Optimized database queries
+   - Efficient UI updates
+   - Smart caching of common data
+   - Minimal memory footprint
+
+3. **Maintainability**
+   - Clear code organization
+   - Comprehensive documentation
+   - Consistent coding style
+   - Easy to extend
 
 ## Running the Application
 

@@ -116,13 +116,12 @@ This separation of concerns is a fundamental principle in software design and ma
 
 ### 1. Entity Classes (Models)
 
-Entity classes are Java classes that represent data stored in the database. They are annotated with JPA annotations to map to database tables.
+Entity classes are Java classes that represent data stored in the database. They use modern JPA patterns and clean code practices.
 
 **Example: BusSchedule.java**
 ```java
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "bus_schedules")
 public class BusSchedule {
@@ -143,15 +142,122 @@ public class BusSchedule {
     @Column(name = "amenity")
     private List<String> amenities;
     
-    // Additional fields and constructors...
+    public boolean hasAmenity(String amenity) {
+        return amenities != null && amenities.contains(amenity);
+    }
 }
 ```
 
 Key points:
-- `@Entity` marks the class as a JPA entity
-- `@Table` specifies the database table name
-- `@Id` and `@GeneratedValue` handle primary key definition
-- `@ElementCollection` manages the one-to-many relationship with amenities
+- Removed redundant annotations (e.g., `@AllArgsConstructor` when custom constructor exists)
+- Simplified amenities handling with `@ElementCollection`
+- Added helper methods for common operations
+- Clean and focused design
+
+### Best Practices for Entity Classes
+
+1. **Property Management**
+   - Use `@ElementCollection` for simple one-to-many relationships
+   - Implement helper methods for common checks
+   - Keep constructors focused and minimal
+   - Use appropriate data types (e.g., BigDecimal for currency)
+
+2. **JavaFX Integration**
+   - Initialize properties in constructors
+   - Use `@PostLoad` for automatic updates
+   - Keep UI-specific logic in controllers
+   - Handle property bindings efficiently
+
+3. **Data Validation**
+   - Use JPA annotations for constraints
+   - Implement business rules in service layer
+   - Keep validation logic consistent
+   - Provide clear error messages
+
+### Controller Design
+
+Controllers should follow these principles:
+
+1. **Clean Separation of Concerns**
+   ```java
+   @Controller
+   public class BookingController {
+       private final BookingService bookingService;
+       private final BusScheduleService busScheduleService;
+       
+       @FXML
+       private void handleSearch() {
+           // Validate input
+           if (!validateSearchCriteria()) {
+               showAlert(Alert.AlertType.WARNING, "Invalid Input");
+               return;
+           }
+           
+           // Perform search
+           List<BusSchedule> results = busScheduleService.findSchedules(
+               fromCity, toCity, date);
+           
+           // Update UI
+           updateSearchResults(results);
+       }
+       
+       private boolean validateSearchCriteria() {
+           // Validation logic
+       }
+       
+       private void updateSearchResults(List<BusSchedule> results) {
+           // UI update logic
+       }
+   }
+   ```
+
+2. **Error Handling**
+   - Use clear alert messages
+   - Handle all edge cases
+   - Provide user-friendly feedback
+   - Log errors appropriately
+
+3. **UI Updates**
+   - Batch updates when possible
+   - Use appropriate cell factories
+   - Handle large datasets efficiently
+   - Maintain responsive UI
+
+### Service Layer Design
+
+Services should implement these patterns:
+
+1. **Business Logic Encapsulation**
+   ```java
+   @Service
+   public class BusScheduleService {
+       private final List<BusSchedule> schedules = new ArrayList<>();
+       private final Map<String, String> busTypeFeatures = new HashMap<>();
+       
+       public List<BusSchedule> findSchedules(String from, String to, LocalDate date) {
+           return schedules.stream()
+               .filter(s -> s.getFromCity().equals(from) && 
+                          s.getToCity().equals(to))
+               .toList();
+       }
+       
+       public Map<String, List<BusSchedule>> findAllSchedulesForDate(LocalDate date) {
+           // Complex business logic implementation
+       }
+   }
+   ```
+
+2. **Data Management**
+   - Use appropriate collections
+   - Implement efficient search algorithms
+   - Cache frequently accessed data
+   - Handle transactions properly
+
+3. **Feature Organization**
+   - Group related functionality
+   - Use clear method names
+   - Document complex logic
+   - Maintain single responsibility
 
 ### 2. Repository Interfaces
 
