@@ -161,6 +161,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/vexe</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
+                    <cleanDisabled>false</cleanDisabled>
+                    <locations>
+                        <location>classpath:db/migration-combined</location>
+                    </locations>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project> 
